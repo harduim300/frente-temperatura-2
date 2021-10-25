@@ -1,6 +1,6 @@
 from init import initValue
 import numpy as np
-
+import matplotlib.pyplot as grafico
 phiInit = []
 def systemHeatEXE():
     #---------------------------------------------------------
@@ -104,7 +104,6 @@ def systemHeatEXE():
         somatorio = sum(termSom)
         T.append(0.5 - (2/np.pi)*somatorio)
     #---------------------------------------------------------
-
     quad = 0.0
     #---------------------------------------------------------
     # Erro Medio Quadratico
@@ -113,6 +112,7 @@ def systemHeatEXE():
         quad = (quad + ((phiN[initValue.nInterator][i]-T[i])**2))
     EMQ = np.sqrt(quad/initValue.jInterator)
     #---------------------------------------------------------
+
 
 
     print('JMAX=\t',initValue.jInterator,' MAXEX=\t',initValue.maxEx)   
@@ -130,6 +130,28 @@ def systemHeatEXE():
     print('t= ','%.3f' % initValue.tmax,' TE=',var2)
     print()
     print('EMQ= ', '{:0.3E}'.format(EMQ))
+
+    #---------------------------------------------------------
+    #Acontece um pequeno erro caso não aja essa condição
+    #---------------------------------------------------------
+    if len(x) > len(phiN[0]):
+        x = np.delete(x, -1)
+    #---------------------------------------------------------
+    # Plotagem do grafico
+    #---------------------------------------------------------
+    plotarGraficoTX(x,T,phiN[initValue.nInterator])
     #---------------------------------------------------------
     # FIM DO PROGRAMA
     #---------------------------------------------------------
+
+#------------------------------------------------------------------------
+# Plotagem do grafico
+#------------------------------------------------------------------------
+def plotarGraficoTX(x1,y1,y2):
+    grafico.ylabel('Temperatura')
+    grafico.xlabel('X')
+    grafico.plot(x1,y1,label='Solucao Exato')
+    grafico.plot(x1,y2,label='Solucao Numerica')
+    grafico.legend()
+    grafico.show()
+#------------------------------------------------------------------------
